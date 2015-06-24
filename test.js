@@ -16,6 +16,14 @@ casper.options.viewportSize = {
   height: 800
 };
 
+// Do not track CasperJS in GA.
+casper.options.onResourceRequested = function(casper, requestData, request) {
+  if (requestData.url.match(/google-analytics\.com/)) {
+    casper.log('Request to GA. Aborting: ' + requestData.url, 'debug');
+    request.abort();
+  }
+};
+
 // HTML logging.
 casper.on('open', function (location) {
   this.echo(location + ' opened');
@@ -28,20 +36,13 @@ casper.on('page.error', function(msg, trace) {
 
 // Catch load errors for the page resources.
 casper.on('resource.error', function(resource) {
-  if (!resource.url.match(/.*google-analytics\.com.*/) &&
+  if (resource.url != "" &&
+    !resource.url.match(/.*google-analytics\.com.*/) &&
     !resource.url.match(/.*fonts\.net.*/) &&
     !resource.url.match(/.*pbs\.twimg\.com.*/) &&
     !resource.url.match(/.*twitter\.com.*/)
   ) {
     this.echo(resource.url + " not found.", "RED_BAR");
-  }
-});
-
-// Do not track CasperJS in GA.
-casper.on('page.resource.requested', function(requestData, request) {
-  if (requestData.url.match(/google-analytics\.com/)) {
-    casper.echo('Request to GA. Aborting: ' + requestData.url);
-    request.abort();
   }
 });
 
