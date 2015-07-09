@@ -44,4 +44,4 @@ done
 SITES_LIST="$(echo -e "${SITES_LIST}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 
 # Kick off CasperJS.
-casperjs test test.js --sites="${SITES_LIST}" --timestamp=${TIMESTAMP} --logLevel="${LOGLEVEL}" --limit=${LIMIT} --ignore-ssl-errors=true --includes=functions.js --xunit=log.xml
+casperjs test tests/ --sites="${SITES_LIST}" --timestamp=${TIMESTAMP} --logLevel="${LOGLEVEL}" --limit=${LIMIT} --ignore-ssl-errors=true --includes=functions.js --xunit=log.xml
